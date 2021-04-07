@@ -165,20 +165,21 @@ def main(_argv):
                     print("Number of {}s: {}".format(key, value))
             f.close()
             image = utils.draw_bbox(frame, pred_bbox, FLAGS.info, counted_classes, allowed_classes=allowed_classes, read_plate=FLAGS.plate)
-            #total_cars=0
-            #on_frame=0
-            #f = open("results.txt", "r")
-            #for aline in f:
-                #x = aline.split(":")
-                #print(x[0],x[1])
-                #if x[0]=='car':
-                    #if x[1]-on_frame>0:
-                        #total_cars+=(x[1]-on_frame)
-                    #else:
-                        #on_frame=x[1]
-            #f = open("results.txt", "w")
-            #f.write("Total Cars:"+str(total_cars))
-            #f.close()        
+            total_cars=0
+            on_frame=0
+            f = open("results.txt", "r")
+            for aline in f:
+                for aline in f:
+                x = aline.split(":")
+               
+                if x[0]=='car':
+                    if int(x[1])-on_frame>0:
+                        total_cars+=(int(x[1])-on_frame)
+                    else:
+                        on_frame=int(x[1])
+            f = open("total.txt", "w")
+            f.write("Total Cars:"+str(total_cars))
+            f.close()        
                      
         else:
             image = utils.draw_bbox(frame, pred_bbox, FLAGS.info, allowed_classes=allowed_classes, read_plate=FLAGS.plate)
@@ -206,3 +207,4 @@ if __name__ == '__main__':
         app.run(main)
     except SystemExit:
         pass
+
