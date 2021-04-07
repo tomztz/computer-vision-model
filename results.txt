@@ -1,0 +1,101 @@
+car:2
+car:2
+car:5
+car:4
+car:4
+car:5
+car:5
+car:5
+car:6
+car:6
+car:6
+car:6
+truck:1
+car:6
+car:6
+car:7
+car:6
+car:7
+car:7
+car:6
+car:6
+car:6
+car:5
+car:5
+car:4
+car:4
+car:5
+car:7
+car:5
+car:5
+car:6
+traffic light:1
+car:6
+car:6
+car:6
+car:6
+car:7
+car:6
+car:6
+car:5
+car:5
+car:6
+car:6
+car:5
+car:6
+car:6
+car:6
+car:5
+car:5
+car:5
+car:6
+car:6
+car:6
+car:6
+car:5
+car:5
+car:5
+car:5
+car:5
+car:5
+car:5
+car:5
+traffic light:1
+car:5
+traffic light:1
+car:5
+traffic light:1
+car:5
+traffic light:1
+car:5
+traffic light:1
+car:5
+traffic light:1
+car:5
+traffic light:1
+car:5
+traffic light:1
+car:5
+traffic light:1
+car:5
+car:5
+traffic light:1
+car:5
+car:5
+car:5
+traffic light:1
+car:5
+car:5
+traffic light:1
+car:5
+car:5
+car:5
+car:5
+traffic light:1
+car:5
+car:5
+car:5
+car:5
+car:5
+car:5
+cup:1
