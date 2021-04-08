@@ -167,7 +167,7 @@ def main(_argv):
             image = utils.draw_bbox(frame, pred_bbox, FLAGS.info, counted_classes, allowed_classes=allowed_classes, read_plate=FLAGS.plate)
             total_cars=0
             on_frame=0
-            f = open("result.txt", "r+")
+            f = open("results.txt", "r+")
             t = open("cars.txt", "w")
             t.write("")
             t.close()
@@ -195,9 +195,12 @@ def main(_argv):
                     x = line.split(":")
                     total_cars += int(x[1])
 
-            average = total_mult/frames
+            #average = total_mult/frames
             print("Accurate total: " + str(total_cars))
-            print("Average total: " + str(average))
+            #print("Average total: " + str(average))
+            f = open("total.txt", "w")
+            f.write("Total Cars:"+str(total_cars))
+            f.close()  
 
                      
         else:
@@ -226,4 +229,3 @@ if __name__ == '__main__':
         app.run(main)
     except SystemExit:
         pass
-
