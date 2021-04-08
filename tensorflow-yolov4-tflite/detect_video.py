@@ -167,19 +167,38 @@ def main(_argv):
             image = utils.draw_bbox(frame, pred_bbox, FLAGS.info, counted_classes, allowed_classes=allowed_classes, read_plate=FLAGS.plate)
             total_cars=0
             on_frame=0
-            f = open("results.txt", "r")
-            for aline in f:
-                for aline in f:
-                x = aline.split(":")
-               
+            f = open("result.txt", "r+")
+            t = open("cars.txt", "w")
+            t.write("")
+            t.close()
+            frames = 0
+            total_mult = 0
+
+            for line in f:
+                x = line.split(":")
+                t = open("cars.txt","a")
                 if x[0]=='car':
-                    if int(x[1])-on_frame>0:
-                        total_cars+=(int(x[1])-on_frame)
-                    else:
-                        on_frame=int(x[1])
-            f = open("total.txt", "w")
-            f.write("Total Cars:"+str(total_cars))
-            f.close()        
+                    total_mult += int(x[1])
+                    t.write(line)
+                frames += 1
+
+
+            c = open("cars.txt","r+")
+            for line in c:
+                nextline = next(c,None)
+                if nextline is not None:
+                    x = line.split(":")
+                    y = nextline.split(":")
+                    if int(y[1]) <  int(x[1]):
+                        total_cars += int(x[1]) - int(y[1])
+                else:
+                    x = line.split(":")
+                    total_cars += int(x[1])
+
+            average = total_mult/frames
+            print("Accurate total: " + str(total_cars))
+            print("Average total: " + str(average))
+
                      
         else:
             image = utils.draw_bbox(frame, pred_bbox, FLAGS.info, allowed_classes=allowed_classes, read_plate=FLAGS.plate)
