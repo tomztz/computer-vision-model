@@ -23,9 +23,6 @@ from tensorflow._api.v2.compat.v1 import InteractiveSession
 #import os
 #from tensorflow_serving.apis import mnist_input_data
 #from tensorflow.python.saved_model import builder as saved_model_builder
-import streamlit as strm
-import numpy as np
-import pandas as pd
 
 flags.DEFINE_string('framework', 'tf', '(tf, tflite, trt')
 flags.DEFINE_string('weights', './checkpoints/yolov4-tiny-416',
