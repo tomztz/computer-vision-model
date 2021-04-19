@@ -166,41 +166,123 @@ def main(_argv):
             f.close()
             image = utils.draw_bbox(frame, pred_bbox, FLAGS.info, counted_classes, allowed_classes=allowed_classes, read_plate=FLAGS.plate)
             total_cars=0
+            total_trucks=0
+            total_buses=0
+            total_bicycles = 0
             on_frame=0
             f = open("results.txt", "r+")
             t = open("cars.txt", "w")
             t.write("")
             t.close()
-            frames = 0
-            total_mult = 0
+
+            tr = open("trucks.txt","w")
+            tr.write("")
+            tr.close()
+
+
+            b = open("buses.txt","w")
+            b.write("")
+            b.close()
+
+            bi = open("bicycles.txt","w")
+            bi.write("")
+            bi.close()
+
 
             for line in f:
                 x = line.split(":")
                 t = open("cars.txt","a")
+                tr = open("trucks.txt", "a")
+                b = open("buses.txt","a")
+                bi = open("bicycles.txt", "a")
                 if x[0]=='car':
-                    total_mult += int(x[1])
                     t.write(line)
-                frames += 1
+                elif x[0]=='truck':
+                    tr.write(line)
+                elif x[0] == "bus":
+                    b.write(line)
+                elif x[0] == "bicycle":
+                    bi.write(line)
 
 
             c = open("cars.txt","r+")
-            for line in c:
-                nextline = next(c,None)
-                if nextline is not None:
+            c = c.readlines()
+            for i in range(0,len(c)):
+                line = c[i]
+                #print(line)
+                
+                if i+1 < len(c):
                     x = line.split(":")
-                    y = nextline.split(":")
+                    y = c[i+1].split(":")
                     if int(y[1]) <  int(x[1]):
                         total_cars += int(x[1]) - int(y[1])
                 else:
                     x = line.split(":")
                     total_cars += int(x[1])
 
-            #average = total_mult/frames
-            print("Accurate total: " + str(total_cars))
-            #print("Average total: " + str(average))
-            f = open("total.txt", "w")
+            tr = open("trucks.txt","r+")
+            tr = tr.readlines()
+            for i in range(0,len(tr)):
+                line = tr[i]
+                #print(line)
+                
+                if i+1 < len(tr):
+                    x = line.split(":")
+                    y = tr[i+1].split(":")
+                    if int(y[1]) <  int(x[1]):
+                        total_trucks += int(x[1]) - int(y[1])
+                else:
+                    x = line.split(":")
+                    total_trucks += int(x[1])
+
+
+            b = open("buses.txt","r+")
+            b = b.readlines()
+            for i in range(0,len(b)):
+                line = b[i]
+                #print(line)
+                
+                if i+1 < len(b):
+                    x = line.split(":")
+                    y = b[i+1].split(":")
+                    if int(y[1]) <  int(x[1]):
+                        total_buses += int(x[1]) - int(y[1])
+                else:
+                    x = line.split(":")
+                    total_buses += int(x[1])
+
+            bi = open("bicycles.txt","r+")
+            bi = bi.readlines()
+            for i in range(0,len(bi)):
+                line = bi[i]
+                #print(line)
+                
+                if i+1 < len(bi):
+                    x = line.split(":")
+                    y = bi[i+1].split(":")
+                    if int(y[1]) <  int(x[1]):
+                        total_bicycles += int(x[1]) - int(y[1])
+                else:
+                    x = line.split(":")
+                    total_bicycles += int(x[1])
+
+            print("Total Cars: " + str(total_cars))
+            print("Total Trucks: " + str(total_trucks))
+            print("Total Buses: " + str(total_buses))
+            print("Total Bicycles: " + str(total_bicycles))
+
+            f = open("total_cars.txt", "w")
             f.write("Total Cars:"+str(total_cars))
-            f.close()  
+            f.close()
+            f = open("total_trucks.txt", "w")
+            f.write("Total Trucks:"+str(total_trucks))
+            f.close()
+            f = open("total_buses.txt", "w")
+            f.write("Total Buses:"+str(total_buses))
+            f.close()
+            f = open("total_bicycles.txt", "w")
+            f.write("Total Bicycles:"+str(total_bicycles))
+            f.close()
 
                      
         else:
