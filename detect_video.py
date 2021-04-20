@@ -18,17 +18,17 @@ import numpy as np
 from tensorflow._api.v2.compat.v1 import ConfigProto
 from tensorflow._api.v2.compat.v1 import InteractiveSession
 #new imports for server
-#import sys
+import sys
+
+#FLAGS = flags.FLAGS
 #from tensorflow.python.util import compat
-#import os
+import os
 #from tensorflow_serving.apis import mnist_input_data
 #from tensorflow.python.saved_model import builder as saved_model_builder
-
 flags.DEFINE_string('framework', 'tf', '(tf, tflite, trt')
-flags.DEFINE_string('weights', './checkpoints/yolov4-tiny-416',
-                    'path to weights file')
+
 flags.DEFINE_integer('size', 416, 'resize images to')
-flags.DEFINE_boolean('tiny', True, 'yolo or yolo-tiny')
+
 flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
 flags.DEFINE_string('video', './data/video/video.mp4', 'path to input video or set to 0 for webcam')
 flags.DEFINE_string('output', None, 'path to output video')
@@ -40,12 +40,32 @@ flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'print info on detections')
 flags.DEFINE_boolean('crop', False, 'crop detections from images')
 flags.DEFINE_boolean('plate', False, 'perform license plate recognition')
+flags.DEFINE_boolean('tiny', False, 'yolo or yolo-tiny')
+flags.DEFINE_string('weights', './checkpoints/yolov4-tiny-416',
+                    'path to weights file')
+class FLAGZ: 
+    framework = 'tf'
+    size = 416
+    model = 'yolov4'
+    video = './data/video/video.mp4'
+    output = './detections/results.mp4'
+    output_format = 'H264'#'XVID'
+    iou = 0.45
+    score = 0.50
+    count = True
+    dont_show=False
+    info=False
+    crop=False
+    plate=False
+    tiny=True
+    weights= './checkpoints/yolov4-tiny-416'
 
 #def main(_argv):
 def main(_argv):
+    FLAGS =FLAGZ()
+    FLAGS.video=_argv[1]
     f = open('results.txt', 'w')
     f.close()
-
     config = ConfigProto()
     config.gpu_options.allow_growth = True
     session = InteractiveSession(config=config)
@@ -177,7 +197,7 @@ def main(_argv):
             total_buses=0
             total_bicycles = 0
             on_frame=0
-            f = open("result.txt", "r+")
+            f = open("results.txt", "r+")
             t = open("cars.txt", "w")
             t.write("")
             t.close()
@@ -285,11 +305,11 @@ def main(_argv):
         fps = 1.0 / (time.time() - start_time)
         print("FPS: %.2f" % fps)
         result = np.asarray(image)
-        cv2.namedWindow("result", cv2.WINDOW_AUTOSIZE)
+        cv2.namedWindow("results", cv2.WINDOW_AUTOSIZE)
         result = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         
         if not FLAGS.dont_show:
-            cv2.imshow("result", result)
+            cv2.imshow("results", result)
         
         if FLAGS.output:
             out.write(result)
