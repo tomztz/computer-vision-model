@@ -19,7 +19,7 @@ from tensorflow._api.v2.compat.v1 import ConfigProto
 from tensorflow._api.v2.compat.v1 import InteractiveSession
 #new imports for server
 import sys
-
+import glob
 #FLAGS = flags.FLAGS
 #from tensorflow.python.util import compat
 import os
@@ -40,16 +40,18 @@ flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'print info on detections')
 flags.DEFINE_boolean('crop', False, 'crop detections from images')
 flags.DEFINE_boolean('plate', False, 'perform license plate recognition')
-flags.DEFINE_boolean('tiny', False, 'yolo or yolo-tiny')
+flags.DEFINE_boolean('tiny', True, 'yolo or yolo-tiny')
 flags.DEFINE_string('weights', './checkpoints/yolov4-tiny-416',
                     'path to weights file')
+list_of_files =glob.glob('./data/video/*')
+oldest_vid =min(list_of_files, key=os.path.getctime)
 class FLAGZ: 
     framework = 'tf'
     size = 416
     model = 'yolov4'
-    video = './data/video/video.mp4'
-    output = './detections/results.mp4'
-    output_format = 'H264'#'XVID'
+    video = oldest_vid
+    output = None
+    output_format = 'XVID'
     iou = 0.45
     score = 0.50
     count = True
@@ -63,7 +65,7 @@ class FLAGZ:
 #def main(_argv):
 def main(_argv):
     FLAGS =FLAGZ()
-    FLAGS.video=_argv[1]
+    #FLAGS.video=vidz
     f = open('results.txt', 'w')
     f.close()
     config = ConfigProto()
@@ -111,6 +113,7 @@ def main(_argv):
             image = Image.fromarray(frame)
         else:
             print('Video has ended or failed, try a different video format!')
+            vid.release()
             break
     
         frame_size = frame.shape[:2]
@@ -314,7 +317,10 @@ def main(_argv):
         if FLAGS.output:
             out.write(result)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
+    
     cv2.destroyAllWindows()
+    os.remove(oldest_vid)
+    print("deleted the oldest file")
 
 #--------------------------Server code
 #export_path_base = sys._argv[-1]
