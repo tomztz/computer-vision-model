@@ -42,6 +42,7 @@ class FLAGZ:
     tiny=True
     
 def main(video_path):
+    print("start")
     disp = Display(visible=False)
     disp.start()
     FLAGS =FLAGZ()

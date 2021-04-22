@@ -9,7 +9,7 @@ def index():
     raw_data = request.get_data()
     data = raw_data.decode()
     now = datetime.now()
-    filename = "video-" + now.strftime("%y-%m-%d %H:%M:%S:%f %Z") + ".mp4"
+    filename = "video-" + now.strftime("%y-%m-%d %H:%M:%S") + ".mp4"
     new_data = [int(num) for num in data[1:-1].split(",")]
     with open("./" + filename, "wb") as file:
         file.write(bytearray(new_data))
