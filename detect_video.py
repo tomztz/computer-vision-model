@@ -42,7 +42,6 @@ class FLAGZ:
     tiny=True
     
 def main(video_path):
-    print("start")
     disp = Display(visible=False)
     disp.start()
     FLAGS =FLAGZ()
@@ -70,6 +69,7 @@ def main(video_path):
             image = Image.fromarray(frame)
         else:
             vid.release()
+            session.close()
             break
         frame_size = frame.shape[:2]
         image_data = cv2.resize(frame, (input_size, input_size))
@@ -89,11 +89,9 @@ def main(video_path):
             iou_threshold=FLAGS.iou,
             score_threshold=FLAGS.score
         )
-
         # format bounding boxes from normalized ymin, xmin, ymax, xmax ---> xmin, ymin, xmax, ymax
         original_h, original_w, _ = frame.shape
         bboxes = utils.format_boxes(boxes.numpy()[0], original_h, original_w)
-
         pred_bbox = [bboxes, scores.numpy()[0], classes.numpy()[0], valid_detections.numpy()[0]]
 
         # read in all class names from config
@@ -101,7 +99,6 @@ def main(video_path):
 
         # by default allow all classes in .names file
         allowed_classes = list(class_names.values())
-        
         # custom allowed classes (uncomment line below to allow detections for only people)
             
         # count objects found
@@ -112,10 +109,6 @@ def main(video_path):
                 f = open("results.txt", "a")
                 f.write("{}:{}\n".format(key, value))
         f.close()
-        image = utils.draw_bbox(frame, pred_bbox, FLAGS.info, counted_classes, allowed_classes=allowed_classes, read_plate=FLAGS.plate)
-        result = np.asarray(image)
-        cv2.namedWindow("results", cv2.WINDOW_AUTOSIZE)
-        result = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
     cv2.destroyAllWindows()
     os.remove(video_path)
@@ -159,6 +152,7 @@ def count_vehicle(filename):
         else:
             x = line.split(":")
             total += int(x[1])
+    del file
     return total
 
 if __name__ == '__main__':
